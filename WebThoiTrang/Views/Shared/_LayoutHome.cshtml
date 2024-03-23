@@ -1,0 +1,563 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>KDT Shop</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/Assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Assets/css/style.css" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.1/flickity.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.2.1/flickity.pkgd.min.js"></script>
+    <!-- Thêm jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Thêm thư viện SignalR -->
+    <script src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <!-- Thêm file ChatHub.js để xử lý các sự kiện trong ứng dụng -->
+    <script src="/Scripts/ChatHub.js"></script>
+    <!-- Khởi tạo kết nối đến Hub -->
+    <script>
+        $(function () {
+            var chatHub = $.connection.chatHub;
+            $.connection.hub.start();
+        });
+    </script>
+    @Styles.Render("~/Assets/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <body>
+        <!-- Page Preloder -->
+        <div id="preloder">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Offcanvas Menu Begin -->
+        <div class="offcanvas-menu-overlay"></div>
+        <div class="offcanvas-menu-wrapper">
+            <div class="offcanvas__close">+</div>
+            <ul class="offcanvas__widget">
+                <li><span class="icon_search search-switch"></span></li>
+                <li>
+                    <a href="#">
+                        <span class="icon_heart_alt"></span>
+                        <div class="tip">2</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon_bag_alt"></span>
+                        <div class="tip">2</div>
+                    </a>
+                </li>
+            </ul>
+            <div class="offcanvas__logo">
+                <a href="@Url.Action("Index","Home")"><img src="~/Assets/img/logo.jpg" alt=""></a>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+            <div class="offcanvas__auth">
+                <a href="#">Đăng Nhập</a>
+                <a href="#">Đăng Ký</a>
+            </div>
+        </div>
+        <!-- Offcanvas Menu End -->
+        <!-- Header Section Begin -->
+        <header class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-2">
+                        <div class="header__logo">
+                            <a href="@Url.Action("Index","Home")"><img src="~/Assets/img/logo.jpg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-7">
+                        <nav class="header__menu">
+                            <ul>
+                                <li class="active"><a href="@Url.Action("Index","Home")">Trang Chủ</a></li>
+                                <li><a href="#">Thời Trang Nữ</a></li>
+                                <li><a href="#">Thời Trang Nam</a></li>
+                                <li><a href="@Url.Action("Shop", "Home")">Shop</a></li>
+                                <li><a href="@Url.Action("Contact", "Home")">Liên hệ</a></li>
+                                <li>
+                                    <a href="#">Tài Khoản</a>
+                                    <ul class="dropdown">
+                                        <li><a href="@Url.Action("EditUserInfor", "Home", new { id =  Session["MaTK"] })">Sửa Thông Tin</a></li>
+                                        <li><a href="@Url.Action("DanhsachDonhang","Home")">Đơn hàng của bạn</a></li>
+                                        <li><a href="@Url.Action("Logout", "Home")">Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="header__right">
+                            <div class="header__right__auth">
+                                @if (Session["HoTen"] != null)
+                                {
+                                    if (Session["Perrmission"].ToString() == "Administrator")
+                                    {
+
+                                        <a data-bs-toggle="dropdown" class="dropdown-toggle">Chào @Session["HoTen"]</a>
+                                    }
+                                    else
+                                    {
+                                        <a data-bs-toggle="dropdown" class="dropdown-toggle">Chào @Session["HoTen"]</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Home")">Đăng nhập</a>
+                                    <a href="@Url.Action("Register", "Home")">Đăng ký</a>
+                                }
+                                <div class="giohang">
+                                    @{ Html.RenderAction("Show_Count_Cart", "Home"); }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas__open">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </div>
+        </header>
+        <!-- Header Section End -->
+        @RenderSection("breadcrumb", required: false)
+        <!-- Categories Section Begin -->
+        @RenderBody();
+        <!-- Categories Section End -->
+        <!-- Product Section Begin -->
+        <!-- Product Section End -->
+        <!-- Banner Section Begin -->
+        <section class="banner set-bg" data-setbg="/Assets/img/banner/banner-1.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-8 m-auto">
+                        <div class="banner__slider owl-carousel">
+                            <div class="banner__item">
+                                <div class="banner__text">
+                                    <span>Bộ sưu tập Chloe</span>
+                                    <h1>Dự án áo khoác</h1>
+                                    <a href="#">Mua Ngay Bây Giờ</a>
+                                </div>
+                            </div>
+                            <div class="banner__item">
+                                <div class="banner__text">
+                                    <span>Bộ sưu tập Chloe</span>
+                                    <h1>Dự án áo khoác</h1>
+                                    <a href="#">Mua Ngay Bây Giờ</a>
+                                </div>
+                            </div>
+                            <div class="banner__item">
+                                <div class="banner__text">
+                                    <span>Bộ sưu tập Chloe</span>
+                                    <h1>Dự án áo khoác</h1>
+                                    <a href="#">Mua Ngay Bây Giờ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Banner Section End -->
+        <!-- Trend Section Begin -->
+        @*<section class="trend spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="trend__content">
+                            <div class="section-title">
+                                <h4>Hot Trend</h4>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/ht-1.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Chain bucket bag</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/ht-2.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Pendant earrings</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/ht-3.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Cotton T-Shirt</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="trend__content">
+                            <div class="section-title">
+                                <h4>Best seller</h4>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/bs-1.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Cotton T-Shirt</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/bs-2.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Zip-pockets pebbled tote <br />briefcase</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/bs-3.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Round leather bag</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="trend__content">
+                            <div class="section-title">
+                                <h4>Feature</h4>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/f-1.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Bow wrap skirt</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/f-2.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Metallic earrings</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                            <div class="trend__item">
+                                <div class="trend__item__pic">
+                                    <img src="img/trend/f-3.jpg" alt="">
+                                </div>
+                                <div class="trend__item__text">
+                                    <h6>Flap cross-body bag</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">$ 59.0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+        <!-- Trend Section End -->
+        <!-- Discount Section Begin -->
+        <section class="discount">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 p-0">
+                        <div class="discount__pic">
+                            <img src="~/Assets/img/discount.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 p-0">
+                        <div class="discount__text">
+                            <div class="discount__text__title">
+                                <span>Đếm ngược</span>
+                                <h2>Mùa hè 2023</h2>
+                                <h5><span>Sale</span> 50%</h5>
+                            </div>
+                            <div class="discount__countdown" id="countdown-time">
+                                <div class="countdown__item">
+                                    <span>22</span>
+                                    <p>Ngày</p>
+                                </div>
+                                <div class="countdown__item">
+                                    <span>18</span>
+                                    <p>Giờ</p>
+                                </div>
+                                <div class="countdown__item">
+                                    <span>46</span>
+                                    <p>Phút</p>
+                                </div>
+                                <div class="countdown__item">
+                                    <span>05</span>
+                                    <p>Giây</p>
+                                </div>
+                            </div>
+                            <a href="#">Mua Ngay Bây Giờ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Discount Section End -->
+        <!-- Services Section Begin -->
+        <section class="services spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="services__item">
+                            <i class="fa fa-car"></i>
+                            <h6>Miễn phí vận chuyển</h6>
+                            <p>Cho mọi đơn hàng</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="services__item">
+                            <i class="fa fa-money"></i>
+                            <h6>Hoàn Tiền</h6>
+                            <p>Nếu có vấn đề</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="services__item">
+                            <i class="fa fa-support"></i>
+                            <h6>Hỗ trợ trực tiếp 24/7</h6>
+                            <p>Chuyên viên tư vấn nhiệt tình</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="services__item">
+                            <i class="fa fa-headphones"></i>
+                            <h6>Thanh toán khi nhận hàng </h6>
+                            <p>100% bảo đảm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Services Section End -->
+        <!-- Instagram Begin -->
+        <div class="instagram">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-1.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-2.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-3.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-4.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-5.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                        <div class="instagram__item set-bg" data-setbg="/Assets/img/instagram/insta-6.jpg">
+                            <div class="instagram__text">
+                                <i class="fa fa-instagram"></i>
+                                @*<a href="#">@ ashion_shop</a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Instagram End -->
+
+        <div id="chat-messages"></div>
+
+        <!-- Footer Section Begin -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="footer__about">
+                            <div class="footer__logo">
+                                <a href="./index.html"><img src="~/Assets/img/logo.jpg" alt=""></a>
+                            </div>
+                            <p>
+                                "Thời trang của bạn - Chúng tôi có tất cả!"
+                            </p>
+                            <div class="footer__payment">
+                                <a href="#"><img src="~/Assets/img/payment/payment-1.png" alt=""></a>
+                                <a href="#"><img src="~/Assets/img/payment/payment-2.png" alt=""></a>
+                                <a href="#"><img src="~/Assets/img/payment/payment-3.png" alt=""></a>
+                                <a href="#"><img src="~/Assets/img/payment/payment-4.png" alt=""></a>
+                                <a href="#"><img src="~/Assets/img/payment/payment-5.png" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-sm-8">
+
+                        <div class="footer__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <div class="footer__copyright__text">
+                            <p>
+                                Năm &copy;
+                                <script>document.write(new Date().getFullYear());</script> KDT | "Thời trang của bạn - Chúng tôi có tất cả!" <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">KDT</a>
+                            </p>
+                        </div>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer Section End -->
+        <!-- Search Begin -->
+        <div class="search-model">
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="search-close-switch">+</div>
+                <form class="search-model-form">
+                    <input type="text" id="search-input" placeholder="Search here.....">
+                </form>
+            </div>
+        </div>
+        <!-- Search End -->
+        @*@Scripts.Render("~/bundles/jquery")*@
+        <script src="~/Assets/js/jquery-3.3.1.min.js"></script>
+        <script src="~/Assets/js/bootstrap.min.js"></script>
+        <script src="~/Assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="~/Assets/js/jquery-ui.min.js"></script>
+        <script src="~/Assets/js/mixitup.min.js"></script>
+        <script src="~/Assets/js/jquery.countdown.min.js"></script>
+        <script src="~/Assets/js/jquery.slicknav.js"></script>
+        <script src="~/Assets/js/owl.carousel.min.js"></script>
+        <script src="~/Assets/js/jquery.nicescroll.min.js"></script>
+        <script src="~/Assets/js/main.js"></script>
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

@@ -1,0 +1,70 @@
+﻿@model WebThoiTrang.Models.HangSanXuat
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var ImagePath = "~/Areas/Admin/Assets/images/" + Model.AnhHSX;
+}
+
+<h2>Chi tiết</h2>
+
+<div class="wrapper bg-white mt-sm-5">
+    <div class="py-1 row-details">
+        <div class="row py-2">
+            <div class="col-md-6">
+                <label>Tên sản phẩm: </label> <b>@Model.TenHSX</b>
+            </div>
+            <div class="col-md-6">
+                <label>Số điện thoại: </label> <b>@Model.DienThoaiHSX</b>
+            </div>
+            @*<div class="col-md-6">
+            <label>Tên danh mục: </label> <b>@Model.DanhMuc.TenDM</b>
+        </div>*@
+        </div>
+        <div class="row py-2">
+            <div class="col-md-6">
+                <label>Email: </label> <b>@Model.EmailHSX</b>
+            </div>
+            <div class="col-md-6">
+                <label>Địa chỉ: </label> <b>@Model.DiaChiHSX</b>
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-md-6">
+                <label>Thông tin: </label> <b>@Model.ThongTinHSX</b>
+            </div>
+            @*<div class="col-md-6">
+                <label>Ngày tạo: </label> <b>@Model.NgayTao</b>
+            </div>*@
+        </div>
+        <div class="row py-1">
+            <div class="col-md-6">
+                <label>Ảnh: </label>
+            </div>
+        </div>
+        <div class="row py-1">
+            <div class="col-md-6">
+                <img src="@Url.Content(ImagePath)" width="100" class="img-thumbnail" alt="Alternate Text" />
+            </div>
+        </div>
+        @*<div class="row py-1">
+            <div class="col-md-6">
+                <label>Mô tả: </label>
+            </div>
+        </div>
+        <div class="row py-1">
+            <div class="col-md-12">
+                <b>@Html.Raw(Model.MoTa)</b>
+            </div>
+        </div>*@
+        <div class="py-3 pb-4 border-bottom">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a class="btn btn-primary" href="@Url.Action("Edit", new{ id = Model.MaHSX })">Sửa</a>
+                    <a class="btn border button" href="/Admin/HangSanXuats">Trở lại</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

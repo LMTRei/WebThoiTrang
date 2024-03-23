@@ -1,0 +1,130 @@
+﻿@model IEnumerable<WebThoiTrang.Models.SanPham>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<section class="categories">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 p-0">
+                <div class="categories__item categories__large__item set-bg"
+                     data-setbg="/Assets/img/categories/category-1.jpg">
+                    <div class="categories__text">
+
+                        <h1>Thời Trang Nữ</h1>
+                        <p>
+                            Mê hoặc phong cách, tăng cường sự tự tin của bạn.
+                        </p>
+                        <a href="@Url.Action("ShopW","Home")">Mua Ngay Bây Giờ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/Assets/img/categories/category-2.jpg">
+                            <div class="categories__text">
+                                <h4>Thời Trang Nam</h4>
+                                <a href="#">Mua Ngay Bây Giờ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/Assets/img/categories/category-3.jpg">
+                            <div class="categories__text">
+                                <h4>Thời Trang Cho Bé</h4>
+                                <a href="#">Mua Ngay Bây Giờ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/Assets/img/categories/category-4.jpg">
+                            <div class="categories__text">
+                                <h4>Mỹ Phẩm</h4>
+                                <a href="#">Mua Ngay Bây Giờ</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="/Assets/img/categories/category-5.jpg">
+                            <div class="categories__text">
+                                <h4>Phụ Kiện</h4>
+                                <a href="#">Mua Ngay Bây Giờ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>Sản Phẩm Mới</h4>
+                </div>
+            </div>
+        </div>
+        <<div class="carousel" data-flickity='{ "wrapAround": true, "autoPlay": true }'>
+            @foreach (var item in Model)
+            {
+                if (item.SoLuong > 0 && item.SoLuong != null)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 ">
+                        <div class="product__item">
+                            @{ string ImagePath = "~/Areas/Admin/Assets/images/" + item.AnhSP; }
+                            <div class="product__item__pic set-bg" data-setbg="@Url.Content(ImagePath)" onMouseOver="showNavigation()" onMouseLeave="hideNavigation()">
+                                <ul class="product__hover navigation" style="display: none;">
+                                    <li><a href="@Url.Content(ImagePath)" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="@Url.Action("AddItem_icon","Home", new { productID = item.MaSP })"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                                @{ TimeSpan difference = DateTime.Now - item.NgayTao; }
+                                @if (item.SoLuong <= 0)
+                                {
+                                    <div class="label stockout">Hết hàng</div>
+                                }
+                                else if (item.PhanTramKM != null && item.PhanTramKM > 0 && item.PhanTramKM.ToString().Trim() != "")
+                                {
+                                    <div class="label sale">Sale @item.PhanTramKM %</div>
+                                }
+                                else if (difference.Days < 7)
+                                {
+                                    <div class="label new">New</div>
+                                }
+                            </div>
+
+                            <div class="product__item__text">
+                                <h6><a href="@Url.Action("ProductDetails","Home", new { id = item.MaSP })">@item.TenSP</a></h6>
+                                @if (item.PhanTramKM != null && item.PhanTramKM > 0 && item.PhanTramKM.ToString().Trim() != "")
+                                {
+                                    int phanTramKM = int.Parse(@item.PhanTramKM.ToString());
+                                    int giaSauKM = @item.GiaBan - @item.GiaBan * phanTramKM / 100;
+                                    <div class="product__price">@giaSauKM.ToString("N0") VNĐ</div>
+                                }
+                                else
+                                {
+                                    <div class="product__price"> @item.GiaBan.ToString("N0") VNĐ</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <script>
+            function showNavigation() {
+                $(".navigation").show();
+            }
+
+            function hideNavigation() {
+                $(".navigation").hide();
+            }
+        </script>
+    </div>
+</section>
+
